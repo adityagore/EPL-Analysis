@@ -29,6 +29,14 @@ if(!require(reshape2)){
 # whoscored.com url
 url <- "http://www.whoscored.com/Regions/252/Tournaments/2/Seasons/4311/Stages/9155/PlayerStatistics/England-Premier-League-2014-2015"
 
+# user <- ""
+# pass <- ""
+# port <- 80
+# ip <- paste0(user,':',pass,"@ondemand.saucelabs.com")
+# browser <- "firefox"
+# version <- "40"
+# platform <- "WINDOWS"
+# extraCapabilities <- list(name="EPL Scrape", username=user,accessKey = pass)
 checkForServer() # Checking if the files for remoteserver are there
 startServer() # Starting the remoteserver
 
@@ -36,7 +44,7 @@ startServer() # Starting the remoteserver
 
 remDr <- remoteDriver(browserName="firefox")#, extraCapabilities=fprof)
 
-remDr$open(silent=TRUE)
+remDr$open()
 
 remDr$navigate(url)
 
@@ -58,3 +66,21 @@ assistData <- data.frame("Goal Scorer" = assistData.gs,
                          "Assists" = assistData.as)
 
 webElem <- remDr$findElement(using="xpath","//*[@id='detailed-statistics-tab']/a")
+webElem$clickElement()
+webElem <- remDr$findElement(using = "xpath", "//*[@id='home']")
+webElem$clickElement()
+page.parse <- htmlParse(remDr$getPageSource(),asText=TRUE)
+playerdetail.home.name <- getNodeSet(page.parse,"//*[@id='player-table-statistics-body']/tr/td[3]/a[1]")
+playerdetail.home.name <- melt(xmlApply(playerdetail.home.name,xmlValue),value.name="Name")$"Name"
+first <- "#statistics-paging-detailed > div:nth-child(1) > dl:nth-child(4) > dd:nth-child(2) > a:nth-child(1)"
+prev <- "#statistics-paging-detailed > div:nth-child(1) > dl:nth-child(4) > dd:nth-child(3) > a:nth-child(1)"
+nextl <- "#statistics-paging-detailed > div:nth-child(1) > dl:nth-child(4) > dd:nth-child(4) > a:nth-child(1)"
+last <- "#statistics-paging-detailed > div:nth-child(1) > dl:nth-child(4) > dd:nth-child(5) > a:nth-child(1)"
+xpath <- "xpath"
+css <- "css"
+webElem <- remDr$findElement(using=css,nextl)
+webElem <- remDr$findElement(using=css,prev)
+!grepl("disabled" , webElem$getElementAttribute("class")[[1]])
+webElem$clickElement()
+first
+webElem <- remDr$findElement(using="css selector","#statistics-paging-detailed > div:nth-child(1) > dl:nth-child(4) > dd:nth-child(4) > a:nth-child(1)")
