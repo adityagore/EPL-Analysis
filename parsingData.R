@@ -48,6 +48,9 @@ remDr$open()
 
 remDr$navigate(url)
 
+allRegions <- remDr$executeScript("return allRegions;")
+allRegions <- remDr$executeScript("return JSONstringify(allRegions);")
+
 firstpage <- remDr$getPageSource()
 
 firstpage.parse <- htmlParse(firstpage,asText = TRUE)
