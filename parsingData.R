@@ -34,15 +34,25 @@ url <- "http://www.whoscored.com/Regions/252/Tournaments/2/Seasons/4311/Stages/9
 # port <- 80
 # ip <- paste0(user,':',pass,"@ondemand.saucelabs.com")
 # browser <- "firefox"
+browser <- "phantomjs"
+# browser <- "chrome"
 # version <- "40"
 # platform <- "WINDOWS"
 # extraCapabilities <- list(name="EPL Scrape", username=user,accessKey = pass)
 checkForServer() # Checking if the files for remoteserver are there
 startServer() # Starting the remoteserver
 
-# fprof <- getFirefoxProfile("firefoxprofile",useBase=TRUE) # getting the firefox profile from current directory
+result <- remDr$executeScript("var page = this;
+                                var fs = require(\"fs\");
+                                page.onLoadFinished = function(status) {
+                                var file = fs.open(\"output.htm\", \"w\");
+                                file.write(page.content);
+                                file.close();
+                               };")
 
-remDr <- remoteDriver(browserName="firefox")#, extraCapabilities=fprof)
+# fprof <- getFirefoxProfile("C:\\Users\\AGORE\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\3kse0f1k.default",useBase=TRUE) # getting the firefox profile from current directory
+
+remDr <- remoteDriver(browserName=browser)#, extraCapabilities=fprof)
 
 remDr$open()
 
@@ -68,7 +78,14 @@ assistData <- data.frame("Goal Scorer" = assistData.gs,
                          "Team" = assistData.tm,
                          "Assists" = assistData.as)
 
+webElem <- remDr$findElement(using="xpath","/html/body/div[5]/div[3]/div[1]/div[4]/div[2]/div[1]/div[2]/div[1]/dl/dd[2]/a")
+webElem$clickElement()
+playertable <- readHTMLTable(htmlParse(remDr$getPageSource(),asText=TRUE),which=1,stringsAsFactors=FALSE)
+webElem <- remDr$findElement(using="xpath","/html/body/div[5]/div[3]/div[1]/div[4]/div[2]/div[4]/div/dl[2]/dd[3]/a")
+webElem$clickElement()
+playertable1 <- readHTMLTable(htmlParse(remDr$getPageSource(),asText=TRUE),which=1,stringsAsFactors=FALSE)
 webElem <- remDr$findElement(using="xpath","//*[@id='detailed-statistics-tab']/a")
+
 webElem$clickElement()
 webElem <- remDr$findElement(using = "xpath", "//*[@id='home']")
 webElem$clickElement()
