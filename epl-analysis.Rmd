@@ -1,0 +1,9 @@
+---
+title: "EPL Project"
+author: "Aditya Gore"
+date: "August 8, 2016"
+output: html_document
+---
+
+# Introduction
+This is a personal project that will deal with extracting player information and making teams.

@@ -34,8 +34,8 @@ url <- "http://www.whoscored.com/Regions/252/Tournaments/2/Seasons/4311/Stages/9
 # port <- 80
 # ip <- paste0(user,':',pass,"@ondemand.saucelabs.com")
 # browser <- "firefox"
-browser <- "phantomjs"
-# browser <- "chrome"
+# browser <- "phantomjs"
+browser <- "chrome"
 # version <- "40"
 # platform <- "WINDOWS"
 # extraCapabilities <- list(name="EPL Scrape", username=user,accessKey = pass)
@@ -50,7 +50,7 @@ result <- remDr$executeScript("var page = this;
                                 file.close();
                                };")
 
-# fprof <- getFirefoxProfile("C:\\Users\\AGORE\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\3kse0f1k.default",useBase=TRUE) # getting the firefox profile from current directory
+# fprof <- getFirefoxProfile("C:\\Users\\Aditya Gore\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\f1zg6rwr.default",useBase=TRUE) # getting the firefox profile from current directory
 
 remDr <- remoteDriver(browserName=browser)#, extraCapabilities=fprof)
 
